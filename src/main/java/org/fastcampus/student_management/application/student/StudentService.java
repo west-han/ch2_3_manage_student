@@ -4,6 +4,8 @@ import org.fastcampus.student_management.application.student.dto.StudentInfoDto;
 import org.fastcampus.student_management.domain.Student;
 import org.fastcampus.student_management.repo.StudentRepository;
 
+import java.util.NoSuchElementException;
+
 public class StudentService {
 
   private final StudentRepository studentRepository;
@@ -23,10 +25,18 @@ public class StudentService {
   }
 
   public void activateStudent(String name) {
-    // TODO: 과제 구현 부분
+    setActivation(name, true);
   }
 
   public void deactivateStudent(String name) {
-    // TODO: 과제 구현 부분
+    setActivation(name, false);
+  }
+
+  private void setActivation(String name, boolean state) {
+    Student student = studentRepository.findByName(name).orElseThrow(() -> new NoSuchElementException());
+    boolean b = student.setActivated(state);
+    if (b) {
+      studentRepository.save(student);
+    }
   }
 }

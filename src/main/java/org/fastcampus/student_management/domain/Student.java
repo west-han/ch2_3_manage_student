@@ -32,4 +32,13 @@ public class Student {
   public boolean isActivate() {
     return activated;
   }
+
+  public boolean setActivated(boolean activated) {
+    if (this.activated == activated) {
+      return false;
+    } else {
+      this.activated = activated;
+      return true;
+    }
+  }
 }
