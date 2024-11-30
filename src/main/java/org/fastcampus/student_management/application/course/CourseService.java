@@ -5,6 +5,7 @@ import java.util.List;
 import org.fastcampus.student_management.application.course.dto.CourseInfoDto;
 import org.fastcampus.student_management.application.student.StudentService;
 import org.fastcampus.student_management.domain.Course;
+import org.fastcampus.student_management.domain.CourseList;
 import org.fastcampus.student_management.domain.DayOfWeek;
 import org.fastcampus.student_management.domain.Student;
 import org.fastcampus.student_management.repo.CourseRepository;
@@ -29,24 +30,17 @@ public class CourseService {
     List<Course> courses = courseRepository.getCourseDayOfWeek(dayOfWeek);
 
     List<CourseInfoDto> list = new ArrayList<>();
-    list = courses.stream().map(course -> {
-      return new CourseInfoDto(
-              course.getCourseName(),
-              course.getFee(),
-              course.getDayOfWeek().name(),
-              course.getStudentName(),
-              course.getCourseTime()
-      );
-    }).toList();
+    list = courses.stream()
+            .map(CourseInfoDto::new)
+            .toList();
 
     return list;
   }
 
   public void changeFee(String studentName, int fee) {
-    List<Course> courseList = courseRepository.getCourseListByStudent(studentName);
-    for (Course course : courseList) {
-      course.setFee(fee);
-    }
-    courseRepository.saveCourses(courseList);
+    List<Course> courses = courseRepository.getCourseListByStudent(studentName);
+    CourseList courseList = new CourseList(courses);
+    courseList.changeAllCoursesFee(fee);
+    courseRepository.saveCourses(courses);
   }
 }

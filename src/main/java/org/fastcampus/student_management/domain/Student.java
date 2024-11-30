@@ -29,16 +29,21 @@ public class Student {
   public String getAddress() {
     return address;
   }
-  public boolean isActivate() {
+  public boolean isActive() {
     return activated;
   }
 
-  public boolean setActivated(boolean activated) {
-    if (this.activated == activated) {
-      return false;
-    } else {
-      this.activated = activated;
-      return true;
+  public void activate() {
+    if (activated) {
+      throw new IllegalArgumentException();
     }
+    this.activated = true;
+  }
+
+  public void deactivate() {
+    if (!activated) {
+      throw new IllegalArgumentException();
+    }
+    this.activated = false;
   }
 }

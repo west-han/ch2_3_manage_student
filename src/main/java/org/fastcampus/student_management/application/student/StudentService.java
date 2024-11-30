@@ -25,18 +25,10 @@ public class StudentService {
   }
 
   public void activateStudent(String name) {
-    setActivation(name, true);
+    getStudent(name).activate();
   }
 
   public void deactivateStudent(String name) {
-    setActivation(name, false);
-  }
-
-  private void setActivation(String name, boolean state) {
-    Student student = studentRepository.findByName(name).orElseThrow(() -> new NoSuchElementException());
-    boolean b = student.setActivated(state);
-    if (b) {
-      studentRepository.save(student);
-    }
+    getStudent(name).deactivate();
   }
 }
